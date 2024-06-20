@@ -7,9 +7,11 @@ export const Admin = () => {
     const [field2, setField2] = useState('');
     const [message, setMessage] = useState('');
 
+    const ipAdress = "http://147.45.185.47:5000"
+
     const handleLogin = (e) => {
         e.preventDefault();
-        fetch('/api/login', {
+        fetch(`${ipAdress}/api/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ login, password })
