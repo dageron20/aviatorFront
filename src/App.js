@@ -9,8 +9,8 @@ function App() {
     <ConfigProvider locale={ruRu}>
       <Router>
         <Routes>
-          <Route path="/" element={<Landing />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/" element={<Landing />} />
         </Routes>
       </Router>
     </ConfigProvider>
