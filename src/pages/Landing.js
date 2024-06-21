@@ -2,8 +2,27 @@ import { Box, Flex, Image, Text } from '@chakra-ui/react';
 import backgroundImage from '../assets/background.png';
 import logoImage from '../assets/aviatorLogo.svg';
 import airplaneImage from '../assets/airplan.svg';
+import { useEffect, useState } from 'react';
 
 export const Landing = () => {
+    const [fields, setFields] = useState({ field_1: 'Version 1.5', field_2: 'Connection...' });
+    const ipAdress = "http://147.45.185.47:5000"
+
+    useEffect(() => {
+        const fetchFields = async () => {
+            try {
+                const response = await fetch(`${ipAdress}/api/fields`);
+                const data = await response.json();
+                setFields(data);
+            } catch (error) {
+                console.error('Error fetching fields:', error);
+            }
+        };
+        fetchFields();
+        const intervalId = setInterval(fetchFields, 1000);
+        return () => clearInterval(intervalId);
+    }, []);
+
     return (
         <Flex
             minHeight="100vh"
@@ -41,7 +60,7 @@ export const Landing = () => {
                         lineHeight="29.05px"
                         userSelect="none" 
                     >
-                        Version 1.5
+                        {fields.field_1}
                     </Text>
                 </Box>
                 <Box
@@ -63,7 +82,7 @@ export const Landing = () => {
                         fontWeight={700}
                         lineHeight="65.35px"
                     >
-                        x4.85
+                        {fields.field_2}
                     </Text>
                 </Box>
                 <Image
