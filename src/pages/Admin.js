@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 
 export const Admin = () => {
     const [login, setLogin] = useState('');
@@ -6,8 +6,9 @@ export const Admin = () => {
     const [field1, setField1] = useState('');
     const [field2, setField2] = useState('');
     const [message, setMessage] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const ipAdress = "http://147.45.185.47:5000"
+    const ipAdress = "http://147.45.185.47:5000";
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -20,6 +21,7 @@ export const Admin = () => {
             .then(data => {
                 if (data.success) {
                     setMessage('Logged in successfully');
+                    setIsLoggedIn(true);
                 } else {
                     setMessage('Login failed');
                 }
@@ -28,7 +30,7 @@ export const Admin = () => {
 
     const handleUpdate = (e) => {
         e.preventDefault();
-        fetch('/api/update-fields', {
+        fetch(`${ipAdress}/api/update-fields`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ field1, field2 })
@@ -39,17 +41,20 @@ export const Admin = () => {
 
     return (
         <div>
-            <form onSubmit={handleLogin}>
-                <input type="text" placeholder="Login" value={login} onChange={(e) => setLogin(e.target.value)} />
-                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <button type="submit">Login</button>
-            </form>
-            <form onSubmit={handleUpdate}>
-                <input type="number" placeholder="Field 1" value={field1} onChange={(e) => setField1(e.target.value)} />
-                <input type="number" placeholder="Field 2" value={field2} onChange={(e) => setField2(e.target.value)} />
-                <button type="submit">Update Fields</button>
-            </form>
+            {!isLoggedIn ? (
+                <form onSubmit={handleLogin}>
+                    <input type="text" placeholder="Login" value={login} onChange={(e) => setLogin(e.target.value)} />
+                    <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <button type="submit">Login</button>
+                </form>
+            ) : (
+                <form onSubmit={handleUpdate}>
+                    <input type="number" placeholder="Field 1" value={field1} onChange={(e) => setField1(e.target.value)} />
+                    <input type="number" placeholder="Field 2" value={field2} onChange={(e) => setField2(e.target.value)} />
+                    <button type="submit">Update Fields</button>
+                </form>
+            )}
             <p>{message}</p>
         </div>
     );
-}
+};
