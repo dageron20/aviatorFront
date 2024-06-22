@@ -1,14 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export const Admin = () => {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
-    const [field_1, setField1] = useState('');
-    const [field_2, setField2] = useState('');
+    const [field1, setField1] = useState('');
+    const [field2, setField2] = useState('');
     const [message, setMessage] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const ipAdress = "http://147.45.185.47:5000";
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetch(`${ipAdress}/api/fields`)
+                .then(response => response.json())
+                .then(data => {
+                    setField1(data.field_1);
+                    setField2(data.field_2);
+                })
+                .catch(err => console.error(err));
+        }
+    }, [isLoggedIn]);
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -33,7 +45,7 @@ export const Admin = () => {
         fetch(`${ipAdress}/api/update-fields`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ field_1, field_2 })
+            body: JSON.stringify({ field_1: field1, field_2: field2 })
         })
             .then(response => response.json())
             .then(data => setMessage(data.message));
@@ -49,8 +61,8 @@ export const Admin = () => {
                 </form>
             ) : (
                 <form onSubmit={handleUpdate}>
-                    <input type="text" placeholder="Field 1" value={field_1} onChange={(e) => setField1(e.target.value)} />
-                    <input type="text" placeholder="Field 2" value={field_2} onChange={(e) => setField2(e.target.value)} />
+                    <input type="text" placeholder="Field 1" value={field1} onChange={(e) => setField1(e.target.value)} />
+                    <input type="text" placeholder="Field 2" value={field2} onChange={(e) => setField2(e.target.value)} />
                     <button type="submit">Update Fields</button>
                 </form>
             )}
