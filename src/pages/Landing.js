@@ -1,11 +1,23 @@
-import { Box, Flex, Image, Text } from '@chakra-ui/react';
+import { Box, Flex, Image, Text, keyframes } from '@chakra-ui/react';
 import backgroundImage from '../assets/background.png';
 import logoImage from '../assets/aviatorLogo.svg';
 import airplaneImage from '../assets/airplan.svg';
 import { useEffect, useState } from 'react';
+import { Textfit } from 'react-textfit';
 
 export const Landing = () => {
     const [fields, setFields] = useState({ field_1: 'Version 1.5', field_2: 'Connection...' });
+    const pulse = keyframes`
+  0% {
+    border-color: rgba(243, 243, 243, 0.16);
+  }
+  50% {
+    border-color: rgba(243, 243, 243, 1);
+  }
+  100% {
+    border-color: rgba(243, 243, 243, 0.16);
+  }
+`;
     const ipAdress = "http://147.45.185.47:5000"
 
     useEffect(() => {
@@ -35,15 +47,15 @@ export const Landing = () => {
         >
             <Flex
                 direction="column"
-                mt="120px"
+                mt="60px"
                 alignItems="center"
-                userSelect="none" 
+                userSelect="none"
             >
                 <Image
                     src={logoImage}
                     alt="Logo"
                     mb="39.5px"
-                    userSelect="none" 
+                    userSelect="none"
                 />
                 <Box
                     border="6px solid #FFFFFF"
@@ -58,7 +70,7 @@ export const Landing = () => {
                         fontSize="24px"
                         fontWeight={700}
                         lineHeight="29.05px"
-                        userSelect="none" 
+                        userSelect="none"
                     >
                         {fields.field_1}
                     </Text>
@@ -74,22 +86,26 @@ export const Landing = () => {
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
+                    animation={`${pulse} 2.5s infinite`}
                 >
-                    <Text
-                        color="rgba(243, 243, 243, 1)"
-                        fontFamily="Inter"
-                        fontSize="54px"
-                        fontWeight={700}
-                        lineHeight="65.35px"
+                    <Textfit
+                        style={{
+                            color: "rgba(243, 243, 243, 1)",
+                            fontFamily: "Inter",
+                            fontWeight: 700,
+                            textAlign: "center"
+                        }}
+                        min={60}
+                        max={124}
                     >
                         {fields.field_2}
-                    </Text>
+                    </Textfit>
                 </Box>
                 <Image
                     src={airplaneImage}
                     alt="Airplane"
                     mb="39.5px"
-                    userSelect="none" 
+                    userSelect="none"
                 />
             </Flex>
         </Flex>

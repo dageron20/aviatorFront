@@ -1,4 +1,14 @@
 import { useState, useEffect } from 'react';
+import {
+    Box,
+    Button,
+    FormControl,
+    FormLabel,
+    Input,
+    VStack,
+    Text,
+    useToast,
+} from '@chakra-ui/react';
 
 export const Admin = () => {
     const [login, setLogin] = useState('');
@@ -9,6 +19,7 @@ export const Admin = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const ipAdress = "http://147.45.185.47:5000";
+    const toast = useToast();
 
     useEffect(() => {
         if (isLoggedIn) {
@@ -34,8 +45,20 @@ export const Admin = () => {
                 if (data.success) {
                     setMessage('Logged in successfully');
                     setIsLoggedIn(true);
+                    toast({
+                        title: 'Login successful.',
+                        status: 'success',
+                        duration: 5000,
+                        isClosable: true,
+                    });
                 } else {
                     setMessage('Login failed');
+                    toast({
+                        title: 'Login failed.',
+                        status: 'error',
+                        duration: 5000,
+                        isClosable: true,
+                    });
                 }
             });
     };
@@ -48,25 +71,90 @@ export const Admin = () => {
             body: JSON.stringify({ field_1: field1, field_2: field2 })
         })
             .then(response => response.json())
-            .then(data => setMessage(data.message));
+            .then(data => {
+                setMessage(data.message);
+                toast({
+                    title: data.message,
+                    status: data.success ? 'success' : 'error',
+                    duration: 5000,
+                    isClosable: true,
+                });
+            });
     };
 
     return (
-        <div>
-            {!isLoggedIn ? (
-                <form onSubmit={handleLogin}>
-                    <input type="text" placeholder="Login" value={login} onChange={(e) => setLogin(e.target.value)} />
-                    <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                    <button type="submit">Login</button>
-                </form>
-            ) : (
-                <form onSubmit={handleUpdate}>
-                    <input type="text" placeholder="Field 1" value={field1} onChange={(e) => setField1(e.target.value)} />
-                    <input type="text" placeholder="Field 2" value={field2} onChange={(e) => setField2(e.target.value)} />
-                    <button type="submit">Update Fields</button>
-                </form>
-            )}
-            <p>{message}</p>
-        </div>
+        <Box
+            minH="100vh"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            bg="gray.100"
+        >
+            <Box
+                p={8}
+                maxWidth="400px"
+                borderWidth={1}
+                borderRadius={8}
+                boxShadow="lg"
+                bg="white"
+            >
+                <VStack spacing={4}>
+                    {!isLoggedIn ? (
+                        <form onSubmit={handleLogin}>
+                            <VStack spacing={4}>
+                                <FormControl isRequired>
+                                    <FormLabel>Login</FormLabel>
+                                    <Input
+                                        type="text"
+                                        placeholder="Login"
+                                        value={login}
+                                        onChange={(e) => setLogin(e.target.value)}
+                                    />
+                                </FormControl>
+                                <FormControl isRequired>
+                                    <FormLabel>Password</FormLabel>
+                                    <Input
+                                        type="password"
+                                        placeholder="Password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                </FormControl>
+                                <Button type="submit" colorScheme="blue" width="full">
+                                    Login
+                                </Button>
+                            </VStack>
+                        </form>
+                    ) : (
+                        <form onSubmit={handleUpdate}>
+                            <VStack spacing={4}>
+                                <FormControl isRequired>
+                                    <FormLabel>Field 1</FormLabel>
+                                    <Input
+                                        type="text"
+                                        placeholder="Field 1"
+                                        value={field1}
+                                        onChange={(e) => setField1(e.target.value)}
+                                    />
+                                </FormControl>
+                                <FormControl isRequired>
+                                    <FormLabel>Field 2</FormLabel>
+                                    <Input
+                                        type="text"
+                                        placeholder="Field 2"
+                                        value={field2}
+                                        onChange={(e) => setField2(e.target.value)}
+                                    />
+                                </FormControl>
+                                <Button type="submit" colorScheme="blue" width="full">
+                                    Update Fields
+                                </Button>
+                            </VStack>
+                        </form>
+                    )}
+                    <Text>{message}</Text>
+                </VStack>
+            </Box>
+        </Box>
     );
 };
