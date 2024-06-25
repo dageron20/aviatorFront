@@ -3,7 +3,6 @@ import backgroundImage from '../assets/background.png';
 import logoImage from '../assets/aviatorLogo.svg';
 import airplaneImage from '../assets/airplan.svg';
 import { useEffect, useState } from 'react';
-import { Textfit } from 'react-textfit';
 
 export const Landing = () => {
     const [fields, setFields] = useState({ field_1: 'Version 1.5', field_2: 'Connection...' });
@@ -88,18 +87,17 @@ export const Landing = () => {
                     alignItems="center"
                     animation={`${pulse} 2.5s infinite`}
                 >
-                    <Textfit
+                    <Text
                         style={{
                             color: "rgba(243, 243, 243, 1)",
                             fontFamily: "Inter",
                             fontWeight: 700,
                             textAlign: "center"
                         }}
-                        min={60}
-                        max={124}
+                        fontSize={'45px'}
                     >
                         {fields.field_2}
-                    </Textfit>
+                    </Text>
                 </Box>
                 <Image
                     src={airplaneImage}
