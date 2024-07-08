@@ -17,7 +17,7 @@ export const Landing = () => {
     border-color: rgba(243, 243, 243, 0.16);
   }
 `;
-    const ipAdress = "http://147.45.185.47:5000"
+    const ipAdress = "https://api.odds96aviator.in"
 
     useEffect(() => {
         const fetchFields = async () => {

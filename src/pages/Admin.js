@@ -18,7 +18,7 @@ export const Admin = () => {
     const [message, setMessage] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const ipAdress = "http://147.45.185.47:5000";
+    const ipAdress = "https://api.odds96aviator.in";
     const toast = useToast();
 
     useEffect(() => {
@@ -75,7 +75,7 @@ export const Admin = () => {
                 setMessage(data.message);
                 toast({
                     title: data.message,
-                    status: data.success ? 'success' : 'error',
+                    status: 'success',
                     duration: 5000,
                     isClosable: true,
                 });
